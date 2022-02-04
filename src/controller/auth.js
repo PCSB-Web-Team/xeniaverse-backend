@@ -3,6 +3,13 @@ const User = require("../models/userSchema");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../middlewares/JWT");
 const nodemailer = require("nodemailer");
+const mailTransporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "pictpbl@gmail.com",
+    pass: "pictpbl@2021",
+  },
+});
 
 async function register(req, res) {
   const record = req.body;
@@ -65,6 +72,20 @@ async function getProfile(req, res) {
   res.send(profile);
 }
 
-async function forgot(req, res) {}
+async function forgot(req, res) {
+  try {
+    const { email } = req.body;
+    const details = {
+      from: "pictpbl@gmail.com",
+      to: email,
+      subject: "password reset",
+      text: "testing the nodemailer",
+    };
+    mailTransporter.sendMail(details);
+    res.send("email sent!");
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+}
 
 module.exports = { register, login, forgot, getProfile };

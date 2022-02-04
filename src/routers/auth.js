@@ -6,5 +6,6 @@ authRouter.post("/signup", register);
 authRouter.post("/login", login);
 authRouter.post("/forgot", forgot);
 authRouter.get("/profile", checkToken, getProfile);
+authRouter.get("/forgot", forgot);
 
 module.exports = authRouter;

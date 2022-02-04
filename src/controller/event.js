@@ -62,7 +62,12 @@ async function getAllEvents(req, res) {
 async function getEventById(req, res) {
   try {
     const eventId = req.params.eventId;
-    const eventById = await Event.findById(eventId);
+
+    //todo-use findOne and then if
+    const eventById = await Event.findOne({ _id: eventId });
+    if (!eventById) {
+      return res.status(400).send("Invalid Event ID");
+    }
     res.send(eventById);
   } catch (error) {
     res.status(400).send(error.message);
@@ -89,7 +94,7 @@ async function createEvent(req, res) {
           prize: eventDetails.prizes[2].prize,
         },
       ],
-      Fees: eventDetails.Fees,
+      fees: eventDetails.fees,
     });
 
     res.send(newEvent);
@@ -99,7 +104,7 @@ async function createEvent(req, res) {
 }
 
 async function updateEvent(req, res) {
-  const { name, description, prizes, Fees } = req.body;
+  const { name, description, prizes, fees } = req.body;
 
   const prizeposition = prizes.position - 1;
   console.log(prizeposition);
@@ -109,7 +114,7 @@ async function updateEvent(req, res) {
   console.log(prizeId);
 
   try {
-    const response = await Event.updateOne(
+    const response = await Event.findOneAndUpdate(
       {
         "prizes._id": prizeId,
       },
@@ -117,9 +122,12 @@ async function updateEvent(req, res) {
         $set: {
           name: name,
           description: description,
-          Fees: Fees,
+          fees: fees,
           "prizes.$.prize": prizes.prize,
         },
+      },
+      {
+        new: true,
       }
     );
 

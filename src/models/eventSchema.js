@@ -4,7 +4,7 @@ const eventSchema = new mongoose.Schema({
   name: { type: String },
   description: { type: String },
   prizes: [{ position: Number, prize: Number }],
-  Fees: { type: Number },
+  fees: { type: Number },
 });
 
 const Event = mongoose.model("Event", eventSchema);
