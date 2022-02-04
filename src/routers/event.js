@@ -1,9 +1,18 @@
+const {
+  getAllEvents,
+  getEventById,
+  createEvent,
+  updateEvent,
+} = require("../controller/event");
+
 const eventRouter = require("express").Router();
 
-eventRouter.get("/", function (req, res) {
-  res.send("this is events page");
-});
+eventRouter.get("/", getAllEvents);
 
-eventRouter.get("/:eventID");
+eventRouter.get("/:eventId", getEventById);
+
+eventRouter.post("/create", createEvent);
+
+eventRouter.put("/update", updateEvent);
 
 module.exports = eventRouter;

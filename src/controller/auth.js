@@ -29,9 +29,7 @@ async function register(req, res) {
     });
 
     const Token = await generateToken(response);
-    res.json({
-      Token,
-    });
+    res.send(Token);
   } catch (error) {
     res.status(400).send(error.message);
   }
