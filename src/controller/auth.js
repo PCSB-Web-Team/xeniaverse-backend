@@ -1,6 +1,7 @@
 require("dotenv").config();
 const User = require("../models/userSchema");
 const bcrypt = require("bcrypt");
+const JWT = require("jsonwebtoken");
 const { generateToken } = require("../middlewares/JWT");
 const nodemailer = require("nodemailer");
 const mailTransporter = nodemailer.createTransport({
@@ -72,20 +73,74 @@ async function getProfile(req, res) {
   res.send(profile);
 }
 
-async function forgot(req, res) {
+async function forgotLink(req, res) {
   try {
     const { email } = req.body;
+
+    const user = await User.findOne({ email: email }).lean();
+    if (!user) {
+      return res.send("Please provide a valid email address");
+    }
+
+    const resetSecret = process.env.Secret + user.password;
+    const token = JWT.sign(
+      {
+        id: user._id,
+        email: user.email,
+      },
+      resetSecret,
+      { expiresIn: "10m" }
+    );
+
+    const link = `http://localhost:4000/api/auth/reset/${user._id}/${token}`;
+
     const details = {
       from: "pictpbl@gmail.com",
       to: email,
-      subject: "password reset",
-      text: "testing the nodemailer",
+      subject: "One time password reset",
+      html: `<h1>Password reset link</h1><a href=${`http://localhost:4000/api/auth/reset/${user._id}/${token}`}>Password reset</a>`,
     };
     mailTransporter.sendMail(details);
-    res.send("email sent!");
+    res.send("link has been sent");
   } catch (error) {
     res.status(400).send(error.message);
   }
 }
 
-module.exports = { register, login, forgot, getProfile };
+async function passReset(req, res) {
+  const { id, token } = req.params;
+  const { password, password2 } = req.body;
+
+  try {
+    const user = await User.findOne({ _id: id }).lean();
+    if (!user) {
+      return res.send("Please provide a valid email address");
+    }
+
+    const resetSecret = process.env.Secret + user.password;
+    const payload = JWT.verify(token, resetSecret);
+
+    const hashedPassword = await bcrypt.hash(
+      password,
+      parseInt(process.env.SaltRounds)
+    );
+
+    const response = await User.findOneAndUpdate(
+      {
+        _id: id,
+      },
+      {
+        password: hashedPassword,
+      },
+      {
+        new: true,
+      }
+    );
+
+    res.send(response);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+}
+
+module.exports = { register, login, forgotLink, getProfile, passReset };

@@ -1,11 +1,18 @@
 const authRouter = require("express").Router();
-const { register, login, forgot, getProfile } = require("../controller/auth");
+const {
+  register,
+  login,
+  forgotLink,
+  getProfile,
+  passReset,
+} = require("../controller/auth");
 const { checkToken } = require("../middlewares/JWT");
 
 authRouter.post("/signup", register);
 authRouter.post("/login", login);
-authRouter.post("/forgot", forgot);
 authRouter.get("/profile", checkToken, getProfile);
-authRouter.get("/forgot", forgot);
+authRouter.post("/forgot", forgotLink);
+// authRouter.get("/reset/:id/:token");
+authRouter.post("/reset/:id/:token", passReset);
 
 module.exports = authRouter;
