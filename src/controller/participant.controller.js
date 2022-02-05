@@ -33,9 +33,60 @@ async function newParticipant(req, res) {
   }
 }
 
+async function getAllparticipants(req, res) {
+  try {
+    const allUsers = await participantModel.find({});
+    res.send(allUsers);
+  } catch (error) {
+    res.send(error.message);
+  }
+}
+
+async function getParticipantById(req, res) {
+  try {
+    const { id } = req.params;
+    const registered = await participantModel.find({ userId: id });
+    res.send(registered);
+  } catch (error) {
+    res.send(error.message);
+  }
+}
+
+async function getEventById(req, res) {
+  try {
+    const { id } = req.params;
+    const registered = await participantModel.find({ eventId: id });
+    res.send(registered);
+  } catch (error) {
+    res.send(error.message);
+  }
+}
+
+async function checkIfParticipantPresent(req, res) {
+  try {
+    const { userId, eventId } = req.params;
+    const response = await participantModel.find({
+      $and: [{ userId: userId }, { eventId: eventId }],
+    });
+    if (response.length) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    res.send(error.message);
+  }
+}
+
 // TODO - getAllparticipants => /
 // TODO - get participant by id => /:id
 // TODO - get all participants for event =>  /event/:eventId
 // TODO - check participant if present (eventId, userId) => boolean /checkParticipant/:eventId/:userId
 
-module.exports = { newParticipant };
+module.exports = {
+  newParticipant,
+  getAllparticipants,
+  getParticipantById,
+  getEventById,
+  checkIfParticipantPresent,
+};
