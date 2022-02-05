@@ -1,5 +1,5 @@
 const seminarDetailsRouter = require("express").Router();
-const Seminar = require("../models/seminarSchema");
+const Seminar = require("../models/seminarSchema.model");
 
 // const blockchain = new Seminar({
 //   name: "Blockchain seminar",

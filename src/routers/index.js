@@ -1,7 +1,7 @@
 const Router = require("express").Router();
-const event = require("../routers/event");
-const auth = require("../routers/auth");
-const seminar = require("../routers/seminar");
+const event = require("../routers/event.router");
+const auth = require("../routers/auth.router");
+const seminar = require("./seminar.router");
 const { ParticipantRouter } = require("./participant.router");
 
 Router.use("/event", event);

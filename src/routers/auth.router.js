@@ -5,7 +5,7 @@ const {
   forgotLink,
   getProfile,
   passReset,
-} = require("../controller/auth");
+} = require("../controller/auth.controller");
 const { checkToken } = require("../middlewares/JWT");
 
 authRouter.post("/signup", register);

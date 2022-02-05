@@ -1,5 +1,5 @@
 const eventDetailRouter = require("express").Router();
-const Event = require("../models/eventSchema");
+const Event = require("../models/eventSchema.model");
 
 // const classicCP = new Event({
 //   name: "Classic CP",
@@ -107,11 +107,9 @@ async function updateEvent(req, res) {
   const { name, description, prizes, fees } = req.body;
 
   const prizeposition = prizes.position - 1;
-  console.log(prizeposition);
 
   const event = await Event.findOne({ name: name });
   const prizeId = event.prizes[prizeposition]._id;
-  console.log(prizeId);
 
   try {
     const response = await Event.findOneAndUpdate(

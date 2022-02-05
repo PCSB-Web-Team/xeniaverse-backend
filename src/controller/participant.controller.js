@@ -1,7 +1,7 @@
-const Event = require("../models/eventSchema");
+const Event = require("../models/eventSchema.model");
 const { events } = require("../models/participant.model");
 const participantModel = require("../models/participant.model");
-const User = require("../models/userSchema");
+const User = require("../models/userSchema.model");
 
 async function newParticipant(req, res) {
   const { userId, eventId } = req.body;

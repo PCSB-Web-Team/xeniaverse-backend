@@ -2,7 +2,7 @@ const {
   getAllSeminars,
   getSeminarById,
   createSeminar,
-} = require("../controller/seminar");
+} = require("../controller/seminar.contoller");
 
 const seminarRouter = require("express").Router();
 
