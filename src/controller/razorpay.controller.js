@@ -39,7 +39,7 @@ async function razorpayPayment(req, res) {
 async function razorpayVerification(req, res) {
   const secret = "atharva";
   const crypto = require("crypto");
-
+  console.log(req.body);
   try {
     const shasum = crypto.createHmac("sha256", secret);
     shasum.update(JSON.stringify(req.body));
