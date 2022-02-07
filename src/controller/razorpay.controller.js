@@ -9,7 +9,9 @@ const instance = new Razorpay({
 
 async function razorpayPayment(req, res) {
   try {
-    const { amount, currency } = req.body;
+    const amount = 50;
+    currency = "INR";
+
     const response = await instance.orders.create({
       amount: amount * 100,
       currency: currency,
@@ -21,7 +23,11 @@ async function razorpayPayment(req, res) {
     });
 
     // console.log(response);
-    res.send("Ok");
+    res.json({
+      id: response.id,
+      currency: "INR",
+      amount: response.amount,
+    });
   } catch (error) {
     res.send(error.message);
   }
