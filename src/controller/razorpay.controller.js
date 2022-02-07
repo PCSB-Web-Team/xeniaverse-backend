@@ -39,12 +39,12 @@ async function razorpayPayment(req, res) {
 async function razorpayVerification(req, res) {
   const secret = "atharva";
   const crypto = require("crypto");
-  console.log(req.body);
+  console.log(req.body.payload.payment.entity.email);
+  console.log(req.body.payload.payment.entity.contact);
   try {
     const shasum = crypto.createHmac("sha256", secret);
     shasum.update(JSON.stringify(req.body));
     const digest = shasum.digest("hex");
-    console.log(digest);
 
     // console.log(digest, req.headers["x-razorpay-signature"]);
     if (digest === req.headers["x-razorpay-signature"]) {
