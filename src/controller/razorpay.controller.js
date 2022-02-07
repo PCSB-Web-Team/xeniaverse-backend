@@ -2,8 +2,7 @@ require("dotenv").config();
 const Razorpay = require("razorpay");
 const shortid = require("shortid");
 const bodyParser = require("body-parser");
-const express = require("express");
-express.use(bodyParser.json());
+app.use(bodyParser.json());
 const instance = new Razorpay({
   key_id: "rzp_test_b0RqwCHzzV88K1",
   key_secret: "9gAxxH1gv5dZec3IWqccUDUY",
