@@ -1,6 +1,7 @@
 require("dotenv").config();
 const Razorpay = require("razorpay");
 const shortid = require("shortid");
+const bodyParser = require("body-parser");
 
 const instance = new Razorpay({
   key_id: "rzp_test_b0RqwCHzzV88K1",
@@ -37,7 +38,7 @@ async function razorpayPayment(req, res) {
 async function razorpayVerification(req, res) {
   const secret = "atharva";
   const crypto = require("crypto");
-  console.log(req.body);
+  console.log(req.body.email, req.body.contact);
 
   try {
     const shasum = crypto.createHmac("sha256", secret);
