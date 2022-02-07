@@ -15,29 +15,26 @@ const mailTransporter = nodemailer.createTransport({
 async function register(req, res) {
   const record = req.body;
 
-  // checking if user already exists
-
   try {
     const userExist = await User.exists({ email: record.email });
-    console.log(userExist);
 
     //process.env.Salt
-    const hashedPassword = await bcrypt.hash(
-      record.password,
-      parseInt(process.env.SaltRounds)
-    );
-    const response = await User.create({
+    const hashedPassword = await bcrypt.hash(record.password, 10);
+    const newUser = await User.create({
       name: record.name,
       email: record.email,
       password: hashedPassword,
-      phone: parseInt(record.phone),
+      mobile: parseInt(record.mobile),
       college: record.college,
       branch: record.branch,
       year: record.year,
     });
 
-    const Token = await generateToken(response);
-    res.send(Token);
+    const token = await generateToken(newUser);
+
+    newUser.token = token;
+
+    res.send(newUser);
   } catch (error) {
     res.status(400).send(error.message);
   }
