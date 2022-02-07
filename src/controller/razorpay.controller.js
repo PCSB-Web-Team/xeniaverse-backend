@@ -8,6 +8,7 @@ const instance = new Razorpay({
 });
 
 async function razorpayPayment(req, res) {
+  // const { eventId, userId } = req.body;
   try {
     const amount = 50;
     currency = "INR";
@@ -16,10 +17,10 @@ async function razorpayPayment(req, res) {
       amount: amount * 100,
       currency: currency,
       receipt: shortid.generate(),
-      notes: {
-        key1: "value3",
-        key2: "value2",
-      },
+      // notes: {
+      //   eventId: eventId,
+      //   userId: userId,
+      // },
     });
 
     // console.log(response);
@@ -36,13 +37,14 @@ async function razorpayPayment(req, res) {
 async function razorpayVerification(req, res) {
   const secret = "atharva";
   const crypto = require("crypto");
+  console.log(req.body);
 
   try {
     const shasum = crypto.createHmac("sha256", secret);
     shasum.update(JSON.stringify(req.body));
     const digest = shasum.digest("hex");
 
-    console.log(digest, req.headers["x-razorpay-signature"]);
+    // console.log(digest, req.headers["x-razorpay-signature"]);
     if (digest === req.headers["x-razorpay-signature"]) {
       console.log("request is legit");
       // process it
