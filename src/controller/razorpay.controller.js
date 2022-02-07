@@ -1,7 +1,9 @@
 require("dotenv").config();
 const Razorpay = require("razorpay");
 const shortid = require("shortid");
-// const bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
+const app = require("express");
+app.use(bodyParser.json());
 
 const instance = new Razorpay({
   key_id: "rzp_test_b0RqwCHzzV88K1",
@@ -21,7 +23,7 @@ async function razorpayPayment(req, res) {
       },
     });
 
-    console.log(response);
+    // console.log(response);
     res.send("Ok");
   } catch (error) {
     res.send(error.message);
@@ -33,8 +35,6 @@ async function razorpayVerification(req, res) {
   const crypto = require("crypto");
 
   try {
-    console.log(req.body);
-
     const shasum = crypto.createHmac("sha256", secret);
     shasum.update(JSON.stringify(req.body));
     const digest = shasum.digest("hex");
