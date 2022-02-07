@@ -1,6 +1,7 @@
 require("dotenv").config();
 const Razorpay = require("razorpay");
 const shortid = require("shortid");
+const bodyParser = require("body-parser");
 
 const instance = new Razorpay({
   key_id: "rzp_test_b0RqwCHzzV88K1",
@@ -8,20 +9,27 @@ const instance = new Razorpay({
 });
 
 async function razorpayPayment(req, res) {
+  // const { eventId, userId } = req.body;
   try {
-    const { amount, currency } = req.body;
+    const amount = 50;
+    currency = "INR";
+
     const response = await instance.orders.create({
       amount: amount * 100,
       currency: currency,
       receipt: shortid.generate(),
-      notes: {
-        key1: "value3",
-        key2: "value2",
-      },
+      // notes: {
+      //   eventId: eventId,
+      //   userId: userId,
+      // },
     });
 
     // console.log(response);
-    res.send("Ok");
+    res.json({
+      id: response.id,
+      currency: "INR",
+      amount: response.amount,
+    });
   } catch (error) {
     res.send(error.message);
   }
@@ -30,13 +38,14 @@ async function razorpayPayment(req, res) {
 async function razorpayVerification(req, res) {
   const secret = "atharva";
   const crypto = require("crypto");
+  console.log(req.body.email, req.body.contact);
 
   try {
     const shasum = crypto.createHmac("sha256", secret);
     shasum.update(JSON.stringify(req.body));
     const digest = shasum.digest("hex");
 
-    console.log(digest, req.headers["x-razorpay-signature"]);
+    // console.log(digest, req.headers["x-razorpay-signature"]);
     if (digest === req.headers["x-razorpay-signature"]) {
       console.log("request is legit");
       // process it
