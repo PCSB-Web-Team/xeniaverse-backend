@@ -73,7 +73,7 @@ async function checkIfParticipantPresent(req, res) {
       eventId: eventId,
     });
     if (response) {
-      return res.send(true);
+      return res.send(response);
     }
     return res.send(false);
   } catch (error) {
