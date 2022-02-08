@@ -1,5 +1,5 @@
 require("dotenv").config();
-const User = require("../models/userSchema.model");
+const User = require("../models/user.model");
 const tokenRouter = require("express").Router();
 const res = require("express/lib/response");
 const JWT = require("jsonwebtoken");

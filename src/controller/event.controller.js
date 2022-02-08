@@ -1,5 +1,5 @@
 const eventDetailRouter = require("express").Router();
-const Event = require("../models/eventSchema.model");
+const Event = require("../models/event.model");
 
 // const classicCP = new Event({
 //   name: "Codeverse",

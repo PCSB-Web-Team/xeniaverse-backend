@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const participantSchema = new mongoose.Schema({
   userId: {
-    type: mongoose.SchemaTypes.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
   name: {
@@ -10,11 +10,12 @@ const participantSchema = new mongoose.Schema({
     required: true,
   },
   eventId: {
-    type: String,
+    type: mongoose.SchemaTypes.ObjectId,
     required: true,
   },
   teamId: {
     type: mongoose.SchemaTypes.ObjectId,
+    default: null,
   },
 });
 

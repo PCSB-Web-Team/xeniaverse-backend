@@ -1,10 +1,5 @@
-// getTeams
-// getTeamById
-// addTeamMember
-// createTeam
-
 const res = require("express/lib/response");
-const Event = require("../models/eventSchema.model");
+const Event = require("../models/event.model");
 const Teams = require("../models/teams.models");
 
 async function getTeams(req, res) {
@@ -26,7 +21,7 @@ async function getTeamById(req, res) {
 
 async function addTeamMember(teamId) {
   try {
-    const update = await Teams.updateOne(
+    const update = await Teams.findOneAndUpdate(
       { _id: teamId },
       { $inc: { count: 1 } },
       { new: true }
@@ -53,21 +48,37 @@ async function addTeamMemberRequest(req, res) {
 
 async function createTeam(req, res) {
   const { name, eventId } = req.body;
+
   try {
     if (!name || !eventId)
       return res.send("Send all details: name, size, eventId");
 
     const eventDetails = await Event.findById(eventId).lean();
 
-    if (!eventDetails) res.status(400).send("Event does not exist");
+    if (!eventDetails) return res.status(400).send("Event does not exist");
+    if (!eventDetails.teamSize)
+      return res
+        .status(400)
+        .send("This event requires individual participant.");
 
     const newTeam = await Teams.create({
-      name,
-      eventId,
+      name: name,
+      eventId: eventId,
       max: eventDetails.teamSize,
     });
 
     res.send(newTeam);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+}
+
+async function getAllTeamsOfEvent(req, res) {
+  const { eventId } = req.params;
+
+  try {
+    const teams = await Teams.find({ eventId: eventId });
+    res.send(teams);
   } catch (error) {
     res.status(400).send(error.message);
   }
@@ -79,4 +90,5 @@ module.exports = {
   addTeamMember,
   addTeamMemberRequest,
   createTeam,
+  getAllTeamsOfEvent,
 };
