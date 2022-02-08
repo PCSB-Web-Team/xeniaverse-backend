@@ -1,54 +1,50 @@
 const eventDetailRouter = require("express").Router();
 const Event = require("../models/eventSchema.model");
 
-// const classicCP = new Event({
-//   name: "Classic CP",
-//   description: "sit amet tellus cras adipiscing enim eu turpis egestas pretium",
-//   prizes: [
-//     { position: 1, prize: 5000 },
-//     { position: 2, prize: 3000 },
-//     { position: 3, prize: 1000 },
-//   ],
-//   Fees: 100,
-// });
+const classicCP = new Event({
+  name: "Codeverse",
+  description: "sit amet tellus cras adipiscing enim eu turpis egestas pretium",
+  prizes: [
+    { position: 1, prize: 2000 },
+    { position: 2, prize: 1000 },
+  ],
+  Fees: 10,
+});
 
-// const ideathon = new Event({
-//   name: "Ideathon",
-//   description: "sit amet tellus cras adipiscing enim eu turpis egestas pretium",
-//   prizes: [
-//     { position: 1, prize: 5000 },
-//     { position: 2, prize: 3000 },
-//     { position: 3, prize: 1000 },
-//   ],
-//   Fees: 200,
-// });
+const ideathon = new Event({
+  name: "Ideazest",
+  description: "sit amet tellus cras adipiscing enim eu turpis egestas pretium",
+  prizes: [
+    { position: 1, prize: 10000 },
+    { position: 2, prize: 5000 },
+  ],
+  Fees: 200,
+});
 
-// const snaphunt = new Event({
-//   name: "Snaphunt",
-//   description: "sit amet tellus cras adipiscing enim eu turpis egestas pretium",
-//   prizes: [
-//     { position: 1, prize: 5000 },
-//     { position: 2, prize: 3000 },
-//     { position: 3, prize: 1000 },
-//   ],
-//   Fees: 300,
-// });
+const snaphunt = new Event({
+  name: "Snaphunt",
+  description: "sit amet tellus cras adipiscing enim eu turpis egestas pretium",
+  prizes: [
+    { position: 1, prize: 5000 },
+    { position: 2, prize: 3000 },
+  ],
+  Fees: 25,
+});
 
-// const debate = new Event({
-//   name: "Debate",
-//   description: "sit amet tellus cras adipiscing enim eu turpis egestas pretium",
-//   prizes: [
-//     { position: 1, prize: 5000 },
-//     { position: 2, prize: 3000 },
-//     { position: 3, prize: 1000 },
-//   ],
-//   Fees: 400,
-// });
+const debate = new Event({
+  name: "Talk Of Titans",
+  description: "sit amet tellus cras adipiscing enim eu turpis egestas pretium",
+  prizes: [
+    { position: 1, prize: 4000 },
+    { position: 2, prize: 2000 },
+  ],
+  Fees: 40,
+});
 
-// classicCP.save();
-// ideathon.save();
-// snaphunt.save();
-// debate.save();
+classicCP.save();
+ideathon.save();
+snaphunt.save();
+debate.save();
 
 async function getAllEvents(req, res) {
   try {
