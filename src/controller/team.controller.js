@@ -64,7 +64,7 @@ async function createTeam(req, res) {
       max: eventDetails.teamSize,
     });
 
-    res.send(eventId);
+    res.send(newTeam);
   } catch (error) {
     res.status(400).send(error.message);
   }
