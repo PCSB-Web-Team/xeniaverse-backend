@@ -15,7 +15,7 @@ async function razorpayPayment(req, res) {
   console.log(req.body.eventId);
 
   try {
-    const event = Event.findById(eventId);
+    const event = Event.findById(req.body.eventId);
     const amount = event.fees;
     currency = "INR";
 
