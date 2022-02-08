@@ -15,9 +15,9 @@ async function razorpayPayment(req, res) {
   console.log(eventId);
 
   try {
-    // const event = Event.findOne({ _id: req.body.eventId }).lean();
-    // console.log(event);
-    const amount = 500;
+    const event = await Event.findOne({ _id: req.body.eventId }).lean();
+    console.log(event);
+    const amount = event.fees;
     currency = "INR";
 
     const response = await instance.orders.create({
