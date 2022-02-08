@@ -23,7 +23,7 @@ async function razorpayPayment(req, res) {
 
     const response = await instance.orders.create({
       amount: amount * 100,
-      currency: currency,
+      currency: "INR",
       receipt: shortid.generate(),
       // notes: {
       //   eventId: eventId,
