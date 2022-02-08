@@ -28,9 +28,10 @@ async function addTeamMember(teamId) {
   try {
     const update = await Teams.updateOne(
       { _id: teamId },
-      { $inc: { count: 1 } }
+      { $inc: { count: 1 } },
+      { new: true }
     );
-    return true;
+    return update;
   } catch (error) {
     return false;
   }
