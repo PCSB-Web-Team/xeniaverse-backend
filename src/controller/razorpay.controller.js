@@ -38,8 +38,10 @@ async function razorpayPayment(req, res) {
 async function razorpayVerification(req, res) {
   const secret = "atharva";
   const crypto = require("crypto");
-  console.log(req.body.payload.payment.entity.card.name);
-  console.log(req.body.payload.payment.entity.notes);
+  const name = req.body.payload.payment.entity.card.name;
+  const eventId = req.body.payload.payment.entity.notes.eventId;
+  const userId = req.body.payload.payment.entity.notes.userId;
+
   try {
     const shasum = crypto.createHmac("sha256", secret);
     shasum.update(JSON.stringify(req.body));
@@ -47,10 +49,11 @@ async function razorpayVerification(req, res) {
 
     if (digest === req.headers["x-razorpay-signature"]) {
       const response = await participantModel.create({
-        userId: req.body.payload.payment.entity.notes.userId,
-        eventId: req.body.payload.payment.entity.notes.eventId,
+        userId: userId,
+        eventId: eventId,
+        name: name,
       });
-      console.log("response");
+      console.log(response);
       // process it
     } else {
       // pass it
