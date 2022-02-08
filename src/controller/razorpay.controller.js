@@ -53,7 +53,6 @@ async function razorpayVerification(req, res) {
         eventId: eventId,
         name: name,
       });
-      console.log(response);
       // process it
     } else {
       // pass it
