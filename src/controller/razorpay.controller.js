@@ -11,11 +11,12 @@ const instance = new Razorpay({
 });
 
 async function razorpayPayment(req, res) {
-  const { eventId, userId } = req.body;
+  // const { eventId, userId } = req.headers[eventId];
+  const eventId = req.headers["eventId"];
   console.log(eventId);
 
   try {
-    const event = await Event.findOne({ _id: req.body.eventId }).lean();
+    const event = await Event.findOne({ _id: eventId }).lean();
     console.log(event);
     const amount = event.fees;
     currency = "INR";
