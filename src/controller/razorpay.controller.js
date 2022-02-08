@@ -11,8 +11,8 @@ const instance = new Razorpay({
 });
 
 async function razorpayPayment(req, res) {
-  const { eventId, userId } = req.body;
-  console.log(req.body);
+  // const { eventId, userId } = req.body;
+  console.log(req.body.eventId);
 
   try {
     const event = Event.findById(eventId);
@@ -43,10 +43,10 @@ async function razorpayPayment(req, res) {
 async function razorpayVerification(req, res) {
   const secret = "atharva";
   const crypto = require("crypto");
-  console.log(req.body.payload.payment.entity.email);
-  console.log(req.body.payload.payment.entity.contact);
-  console.log(req.body.payload.payment.entity.card.name);
-  console.log(req.body.payload.payment.entity.notes);
+  // console.log(req.body.payload.payment.entity.email);
+  // console.log(req.body.payload.payment.entity.contact);
+  // console.log(req.body.payload.payment.entity.card.name);
+  // console.log(req.body.payload.payment.entity.notes);
   try {
     const shasum = crypto.createHmac("sha256", secret);
     shasum.update(JSON.stringify(req.body));
