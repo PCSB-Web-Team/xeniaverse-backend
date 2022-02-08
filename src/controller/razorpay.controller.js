@@ -7,8 +7,8 @@ const participantModel = require("../models/participant.model");
 const app = require("express")();
 app.use(bodyParser.json());
 const instance = new Razorpay({
-  key_id: "rzp_test_b0RqwCHzzV88K1",
-  key_secret: "9gAxxH1gv5dZec3IWqccUDUY",
+  key_id: process.env.razorpayKey_id,
+  key_secret: process.env.razorpayKey_secret,
 });
 
 async function razorpayPayment(req, res) {
@@ -36,7 +36,7 @@ async function razorpayPayment(req, res) {
 }
 
 async function razorpayVerification(req, res) {
-  const secret = "atharva";
+  const secret = process.env.razorpayVerification_secret;
   const crypto = require("crypto");
   const name = req.body.payload.payment.entity.card.name;
   const eventId = req.body.payload.payment.entity.notes.eventId;

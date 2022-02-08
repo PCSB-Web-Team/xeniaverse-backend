@@ -65,9 +65,8 @@ async function getEventById(req, res) {
 
 async function checkIfParticipantPresent(req, res) {
   const { userId, eventId } = req.params;
-  console.log(userId, eventId);
+
   try {
-    console.log("Checking");
     const response = await participantModel.findOne({
       userId: userId,
       eventId: eventId,
