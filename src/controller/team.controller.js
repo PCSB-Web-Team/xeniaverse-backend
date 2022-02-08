@@ -76,7 +76,7 @@ async function createTeam(req, res) {
       }
     );
 
-    console.log(n);
+    console.log(user);
 
     res.send(newTeam);
   } catch (error) {
