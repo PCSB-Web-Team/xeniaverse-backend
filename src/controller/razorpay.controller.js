@@ -12,10 +12,11 @@ const instance = new Razorpay({
 
 async function razorpayPayment(req, res) {
   // const { eventId, userId } = req.body;
-  console.log(req.body.eventId);
+  console.log(req.body);
 
   try {
     const event = Event.findById(req.body.eventId);
+    console.log(event);
     const amount = event.fees;
     currency = "INR";
 
