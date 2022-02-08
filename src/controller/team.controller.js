@@ -16,7 +16,8 @@ async function getTeamById(req, res) {
   const { id } = req.params;
   try {
     const teamDetails = await Teams.findById(id);
-    if (!teamDetails) res.status(404).send("No Teams exist with this Id");
+    if (!teamDetails)
+      return res.status(404).send("No Teams exist with this Id");
     res.send(teamDetails);
   } catch (err) {
     res.status(400).send(err.message);
@@ -52,7 +53,8 @@ async function addTeamMemberRequest(req, res) {
 async function createTeam(req, res) {
   const { name, eventId } = req.body;
   try {
-    if (!name || !eventId) res.send("Send all details: name, size, eventId");
+    if (!name || !eventId)
+      return res.send("Send all details: name, size, eventId");
 
     const eventDetails = await Event.findById(eventId).lean();
 
