@@ -51,7 +51,7 @@ async function createTeam(req, res) {
   const { name, eventId, userId } = req.body;
 
   try {
-    if (!name || !eventId)
+    if (!name || !eventId || userId)
       return res.send("Send all details: name, size, eventId");
 
     const eventDetails = await Event.findById(eventId).lean();
@@ -70,8 +70,13 @@ async function createTeam(req, res) {
 
     const user = await User.updateOne(
       { eventId, userId },
-      { teamId: newTeam._id }
+      { teamId: newTeam._id },
+      {
+        new: true,
+      }
     );
+
+    console.log(n);
 
     res.send(newTeam);
   } catch (error) {
