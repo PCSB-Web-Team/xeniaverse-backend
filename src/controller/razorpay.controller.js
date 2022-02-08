@@ -12,7 +12,7 @@ const instance = new Razorpay({
 
 async function razorpayPayment(req, res) {
   // const { eventId, userId } = req.headers[eventId];
-  const eventId = req.headers["eventId"];
+  const { eventId } = req.body;
   console.log(eventId);
 
   try {
@@ -23,7 +23,7 @@ async function razorpayPayment(req, res) {
 
     const response = await instance.orders.create({
       amount: amount * 100,
-      currency: currency,
+      currency: "INR",
       receipt: shortid.generate(),
       // notes: {
       //   eventId: eventId,
