@@ -1,28 +1,6 @@
 const seminarDetailsRouter = require("express").Router();
 const Seminar = require("../models/seminar.model");
 
-// const blockchain = new Seminar({
-//   name: "Blockchain seminar",
-//   description: "sit amet tellus cras adipiscing enim eu turpis egestas pretium",
-//   speaker: "Vitalik Buterin",
-// });
-
-// const ml = new Seminar({
-//   name: "Machine learning seminar",
-//   description: "sit amet tellus cras adipiscing enim eu turpis egestas pretium",
-//   speaker: "Andrew Ng",
-// });
-
-// const supercars = new Seminar({
-//   name: "supercars seminar",
-//   description: "sit amet tellus cras adipiscing enim eu turpis egestas pretium",
-//   speaker: "Elon Musk",
-// });
-
-// blockchain.save();
-// ml.save();
-// supercars.save();
-
 async function getAllSeminars(req, res) {
   try {
     const allSeminars = await Seminar.find({});
