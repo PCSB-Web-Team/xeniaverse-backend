@@ -3,6 +3,7 @@ const Razorpay = require("razorpay");
 const shortid = require("shortid");
 const bodyParser = require("body-parser");
 const Event = require("../models/eventSchema.model");
+const participantModel = require("../models/participant.model");
 const app = require("express")();
 app.use(bodyParser.json());
 const instance = new Razorpay({
@@ -11,13 +12,10 @@ const instance = new Razorpay({
 });
 
 async function razorpayPayment(req, res) {
-  // const { eventId, userId } = req.headers[eventId];
   const { eventId } = req.body;
-  console.log(eventId);
 
   try {
     const event = await Event.findOne({ _id: eventId }).lean();
-    console.log(event);
     const amount = event.fees;
     currency = "INR";
 
@@ -25,13 +23,8 @@ async function razorpayPayment(req, res) {
       amount: amount * 100,
       currency: "INR",
       receipt: shortid.generate(),
-      // notes: {
-      //   eventId: eventId,
-      //   userId: userId,
-      // },
     });
 
-    // console.log(response);
     res.json({
       id: response.id,
       currency: "INR",
@@ -45,8 +38,6 @@ async function razorpayPayment(req, res) {
 async function razorpayVerification(req, res) {
   const secret = "atharva";
   const crypto = require("crypto");
-  // console.log(req.body.payload.payment.entity.email);
-  // console.log(req.body.payload.payment.entity.contact);
   console.log(req.body.payload.payment.entity.card.name);
   console.log(req.body.payload.payment.entity.notes);
   try {
@@ -54,9 +45,12 @@ async function razorpayVerification(req, res) {
     shasum.update(JSON.stringify(req.body));
     const digest = shasum.digest("hex");
 
-    // console.log(digest, req.headers["x-razorpay-signature"]);
     if (digest === req.headers["x-razorpay-signature"]) {
-      console.log("request is legit");
+      const response = await participantModel.create({
+        userId: req.body.payload.payment.entity.notes.userId,
+        eventId: req.body.payload.payment.entity.notes.eventId,
+      });
+      console.log("response");
       // process it
     } else {
       // pass it
