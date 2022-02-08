@@ -9,6 +9,7 @@ const eventSchema = new mongoose.Schema({
     type: Number,
     default: 1,
   },
+  logo: { type: String },
 });
 
 const Event = mongoose.model("Event", eventSchema);
