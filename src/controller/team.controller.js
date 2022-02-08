@@ -1,5 +1,6 @@
 const res = require("express/lib/response");
 const Event = require("../models/event.model");
+const participantModel = require("../models/participant.model");
 const Teams = require("../models/teams.models");
 const User = require("../models/user.model");
 
@@ -51,8 +52,8 @@ async function createTeam(req, res) {
   const { name, eventId, userId } = req.body;
 
   try {
-    if (!name || !eventId || userId)
-      return res.send("Send all details: name, size, eventId");
+    if (!name || !eventId || !userId)
+      return res.status(400).send("Send all details: name, userId, eventId");
 
     const eventDetails = await Event.findById(eventId).lean();
 
@@ -68,15 +69,13 @@ async function createTeam(req, res) {
       max: eventDetails.teamSize,
     });
 
-    const user = await User.updateOne(
+    const participant = await participantModel.findOneAndUpdate(
       { eventId, userId },
       { teamId: newTeam._id },
       {
         new: true,
       }
     );
-
-    console.log(user);
 
     res.send(newTeam);
   } catch (error) {
