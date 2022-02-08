@@ -2,6 +2,7 @@ const Event = require("../models/eventSchema.model");
 const { events } = require("../models/participant.model");
 const participantModel = require("../models/participant.model");
 const User = require("../models/userSchema.model");
+const { addTeamMember } = require("./team.controller");
 
 async function newParticipant(req, res) {
   const { userId, eventId } = req.body;
@@ -80,6 +81,36 @@ async function checkIfParticipantPresent(req, res) {
   }
 }
 
+async function joinTeam(req, res) {
+  const { userId, teamId } = req.body;
+  try {
+    const status = await addTeamMember(teamId);
+    if (!status)
+      return res.status(400).send("Team is full, or something went wrong");
+
+    const participant = await participantModel.findOneAndUpdate(
+      {
+        userId,
+        eventId: status.eventId,
+      },
+      {
+        $set: {
+          teamId,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+
+    if (!participant) return res.status(404).send("Participant not found");
+
+    res.send(participant);
+  } catch (err) {
+    res.status(400).send("An Error Occured");
+  }
+}
+
 // TODO - getAllparticipants => /
 // TODO - get participant by id => /:id
 // TODO - get all participants for event =>  /event/:eventId
@@ -91,4 +122,5 @@ module.exports = {
   getParticipantById,
   getEventById,
   checkIfParticipantPresent,
+  joinTeam,
 };

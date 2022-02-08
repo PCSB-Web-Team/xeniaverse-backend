@@ -4,6 +4,7 @@ const {
   getParticipantById,
   getEventById,
   checkIfParticipantPresent,
+  joinTeam,
 } = require("../controller/participant.controller");
 const ParticipantRouter = require("express").Router();
 
@@ -15,5 +16,6 @@ ParticipantRouter.get(
   "/checkParticipant/:eventId/:userId",
   checkIfParticipantPresent
 );
+ParticipantRouter.post("/jointeam", joinTeam);
 
 module.exports = { ParticipantRouter };
