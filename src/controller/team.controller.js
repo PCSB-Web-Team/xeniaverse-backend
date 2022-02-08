@@ -1,6 +1,7 @@
 const res = require("express/lib/response");
 const Event = require("../models/event.model");
 const Teams = require("../models/teams.models");
+const User = require("../models/user.model");
 
 async function getTeams(req, res) {
   const teamsList = await Teams.find({});
@@ -47,7 +48,7 @@ async function addTeamMemberRequest(req, res) {
 }
 
 async function createTeam(req, res) {
-  const { name, eventId } = req.body;
+  const { name, eventId, userId } = req.body;
 
   try {
     if (!name || !eventId)
@@ -66,6 +67,11 @@ async function createTeam(req, res) {
       eventId: eventId,
       max: eventDetails.teamSize,
     });
+
+    const user = await User.updateOne(
+      { eventId, userId },
+      { teamId: newTeam._id }
+    );
 
     res.send(newTeam);
   } catch (error) {
