@@ -12,7 +12,7 @@ const instance = new Razorpay({
 
 async function razorpayPayment(req, res) {
   // const { eventId, userId } = req.headers[eventId];
-  const eventId = req.headers["eventId"];
+  const { eventId } = req.body;
   console.log(eventId);
 
   try {
