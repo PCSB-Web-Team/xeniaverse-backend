@@ -50,7 +50,7 @@ async function addTeamMemberRequest(req, res) {
 }
 
 async function createTeam(req, res) {
-  const { name, size, eventId } = req.body;
+  const { name, eventId } = req.body;
   try {
     if (!name || !eventId) res.send("Send all details: name, size, eventId");
 
@@ -64,7 +64,7 @@ async function createTeam(req, res) {
       max: eventDetails.teamSize,
     });
 
-    eventDetails;
+    res.send(eventId);
   } catch (error) {
     res.status(400).send(error.message);
   }
