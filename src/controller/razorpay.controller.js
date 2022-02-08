@@ -2,16 +2,22 @@ require("dotenv").config();
 const Razorpay = require("razorpay");
 const shortid = require("shortid");
 const bodyParser = require("body-parser");
-
+const Event = require("../models/eventSchema.model");
+const app = require("express")();
+app.use(bodyParser.json());
 const instance = new Razorpay({
   key_id: "rzp_test_b0RqwCHzzV88K1",
   key_secret: "9gAxxH1gv5dZec3IWqccUDUY",
 });
 
 async function razorpayPayment(req, res) {
-  // const { eventId, userId } = req.body;
+  const { eventId, userId } = req.body;
+  console.log(eventId);
+
   try {
-    const amount = 50;
+    // const event = Event.findOne({ _id: req.body.eventId }).lean();
+    // console.log(event);
+    const amount = 500;
     currency = "INR";
 
     const response = await instance.orders.create({
@@ -38,8 +44,10 @@ async function razorpayPayment(req, res) {
 async function razorpayVerification(req, res) {
   const secret = "atharva";
   const crypto = require("crypto");
-  console.log(req.body.email, req.body.contact);
-
+  // console.log(req.body.payload.payment.entity.email);
+  // console.log(req.body.payload.payment.entity.contact);
+  console.log(req.body.payload.payment.entity.card.name);
+  console.log(req.body.payload.payment.entity.notes);
   try {
     const shasum = crypto.createHmac("sha256", secret);
     shasum.update(JSON.stringify(req.body));

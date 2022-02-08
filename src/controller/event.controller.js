@@ -2,25 +2,23 @@ const eventDetailRouter = require("express").Router();
 const Event = require("../models/eventSchema.model");
 
 // const classicCP = new Event({
-//   name: "Classic CP",
+//   name: "Codeverse",
 //   description: "sit amet tellus cras adipiscing enim eu turpis egestas pretium",
 //   prizes: [
-//     { position: 1, prize: 5000 },
-//     { position: 2, prize: 3000 },
-//     { position: 3, prize: 1000 },
+//     { position: 1, prize: 2000 },
+//     { position: 2, prize: 1000 },
 //   ],
-//   Fees: 100,
+//   fees: 10,
 // });
 
 // const ideathon = new Event({
-//   name: "Ideathon",
+//   name: "Ideazest",
 //   description: "sit amet tellus cras adipiscing enim eu turpis egestas pretium",
 //   prizes: [
-//     { position: 1, prize: 5000 },
-//     { position: 2, prize: 3000 },
-//     { position: 3, prize: 1000 },
+//     { position: 1, prize: 10000 },
+//     { position: 2, prize: 5000 },
 //   ],
-//   Fees: 200,
+//   fees: 200,
 // });
 
 // const snaphunt = new Event({
@@ -29,20 +27,18 @@ const Event = require("../models/eventSchema.model");
 //   prizes: [
 //     { position: 1, prize: 5000 },
 //     { position: 2, prize: 3000 },
-//     { position: 3, prize: 1000 },
 //   ],
-//   Fees: 300,
+//   fees: 25,
 // });
 
 // const debate = new Event({
-//   name: "Debate",
+//   name: "Talk Of Titans",
 //   description: "sit amet tellus cras adipiscing enim eu turpis egestas pretium",
 //   prizes: [
-//     { position: 1, prize: 5000 },
-//     { position: 2, prize: 3000 },
-//     { position: 3, prize: 1000 },
+//     { position: 1, prize: 4000 },
+//     { position: 2, prize: 2000 },
 //   ],
-//   Fees: 400,
+//   fees: 40,
 // });
 
 // classicCP.save();
