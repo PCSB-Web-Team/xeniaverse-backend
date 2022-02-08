@@ -1,7 +1,8 @@
-const Event = require("../models/eventSchema.model");
+const Event = require("../models/event.model");
 const { events } = require("../models/participant.model");
 const participantModel = require("../models/participant.model");
-const User = require("../models/userSchema.model");
+const Teams = require("../models/teams.models");
+const User = require("../models/user.model");
 const { addTeamMember } = require("./team.controller");
 
 async function newParticipant(req, res) {
@@ -14,13 +15,13 @@ async function newParticipant(req, res) {
     const user = await User.findById(userId).lean();
 
     // checking if user is present
-    if (!user) res.status(404).send("User not found");
+    if (!user) return res.status(404).send("User not found");
 
     // searching
     const event = await Event.findById(eventId);
 
     // check if event exist
-    if (!event) res.status(404).send("Event not found");
+    if (!event) return res.status(404).send("Event not found");
 
     const participant = await participantModel.create({
       userId,
@@ -72,9 +73,9 @@ async function checkIfParticipantPresent(req, res) {
       eventId: eventId,
     });
     if (response) {
-      return res.send(true);
+      return res.send(response);
     }
-    return req.send(false);
+    return res.send(false);
   } catch (error) {
     res.send(error.message);
   }
@@ -83,31 +84,39 @@ async function checkIfParticipantPresent(req, res) {
 async function joinTeam(req, res) {
   const { userId, teamId } = req.body;
   try {
-    const status = await addTeamMember(teamId);
-    if (!status)
-      return res.status(400).send("Team is full, or something went wrong");
+    const team = await Teams.findById(teamId);
 
-    const participant = await participantModel.findOneAndUpdate(
-      {
-        userId,
-        eventId: status.eventId,
-      },
-      {
-        $set: {
-          teamId,
-        },
-      },
-      {
-        new: true,
-      }
-    );
+    if (!team) return res.status(404).send("Team not found");
 
-    if (!participant) return res.status(404).send("Participant not found");
+    if (team.isFull) return res.status(400).send("Team is Full");
+
+    const participant = await participantModel.findOne({
+      userId,
+      eventId: team.eventId,
+    });
+
+    if (!participant)
+      return res
+        .status(400)
+        .send("Particiant has not participated for this event");
+
+    participant.teamId = teamId;
+
+    team.count = team.count + 1;
+
+    await participant.save();
+    await team.save();
 
     res.send(participant);
   } catch (err) {
-    res.status(400).send("An Error Occured");
+    res.status(400).send(err.message);
   }
+}
+
+async function getTeamMembers(req, res) {
+  const { teamId } = req.params;
+  const team = await Teams.find({});
+  res.send(team);
 }
 
 // TODO - getAllparticipants => /
@@ -122,4 +131,5 @@ module.exports = {
   getEventById,
   checkIfParticipantPresent,
   joinTeam,
+  getTeamMembers,
 };

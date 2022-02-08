@@ -1,5 +1,5 @@
 const seminarDetailsRouter = require("express").Router();
-const Seminar = require("../models/seminarSchema.model");
+const Seminar = require("../models/seminar.model");
 
 async function getAllSeminars(req, res) {
   try {

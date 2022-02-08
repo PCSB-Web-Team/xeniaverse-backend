@@ -2,7 +2,7 @@ require("dotenv").config();
 const Razorpay = require("razorpay");
 const shortid = require("shortid");
 const bodyParser = require("body-parser");
-const Event = require("../models/eventSchema.model");
+const Event = require("../models/event.model");
 const participantModel = require("../models/participant.model");
 const app = require("express")();
 app.use(bodyParser.json());

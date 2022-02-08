@@ -1,5 +1,5 @@
 require("dotenv").config();
-const User = require("../models/userSchema.model");
+const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const JWT = require("jsonwebtoken");
 const { generateToken } = require("../middlewares/JWT");
@@ -11,6 +11,11 @@ const mailTransporter = nodemailer.createTransport({
     pass: process.env.gmailPass,
   },
 });
+
+async function getAll(req, res) {
+  const list = await User.find({});
+  res.send(list);
+}
 
 async function register(req, res) {
   const record = req.body;
@@ -140,4 +145,4 @@ async function passReset(req, res) {
   }
 }
 
-module.exports = { register, login, forgotLink, getProfile, passReset };
+module.exports = { register, login, forgotLink, getProfile, passReset, getAll };

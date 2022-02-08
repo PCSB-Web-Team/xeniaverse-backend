@@ -12,25 +12,24 @@ const teamSchema = new mongoose.Schema({
   },
   count: {
     type: Number,
-    default: 0,
+    default: 1,
   },
   isFull: {
     type: Boolean,
     default: false,
-    required: false,
   },
   eventId: {
-    type: String,
+    type: mongoose.SchemaTypes.ObjectId,
     required: true,
   },
 });
 
+teamSchema.index({ name: 1, eventId: 1 }, { unique: true });
+
 teamSchema.pre("save", function (next) {
-  this.sum = this.count === this.max;
+  this.isFull = this.count >= this.max;
   next();
 });
-
-teamSchema.index({ userId: 1, eventId: 1 }, { unique: true });
 
 const Teams = mongoose.model("Teams", teamSchema);
 
