@@ -6,15 +6,15 @@ const { generateToken } = require("../middlewares/JWT");
 const nodemailer = require("nodemailer");
 
 const mailTransporter = nodemailer.createTransport({
-  host: "smtp-mail.outlook.com", // hostname
-  secureConnection: false, // TLS requires secureConnection to be false
-  port: 587, // port for secure SMTP
-  tls: {
-    ciphers: "SSLv3",
-  },
+  host: "smtp.gmail.com", // hostname
+  secure: true, // TLS requires secureConnection to be false
+  port: 465, // port for secure SMTP
+  // tls: {
+  //   ciphers: "SSLv3",
+  // },
   auth: {
-    user: "testing01022019@outlook.com",
-    pass: "testing@122019",
+    user: "pictpbl@gmail.com",
+    pass: "pictpbl@2021",
   },
 });
 
@@ -103,7 +103,7 @@ async function forgotLink(req, res) {
     const link = `http://localhost:4000/api/auth/reset/${user._id}/${token}`;
 
     const details = {
-      from: "testing01022019@outlook.com",
+      from: "pictpbl@gmail.com",
       to: email,
       subject: "One time password reset",
       html: `<h1>Password reset link</h1><a href=${`https://xeniaverse.co.in/resetpassword/${user._id}/${token}`}>Password reset</a>`,
