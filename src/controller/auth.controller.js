@@ -7,14 +7,14 @@ const nodemailer = require("nodemailer");
 
 const mailTransporter = nodemailer.createTransport({
   host: "smtp-mail.outlook.com", // hostname
-  secureConnection: false, // use SSL
+  secureConnection: false, // TLS requires secureConnection to be false
   port: 587, // port for secure SMTP
-  auth: {
-    user: process.env.gmailUser,
-    pass: process.env.gmailPass,
-  },
   tls: {
     ciphers: "SSLv3",
+  },
+  auth: {
+    user: "testing01022019@outlook.com",
+    pass: "testing@122019",
   },
 });
 
@@ -91,7 +91,7 @@ async function forgotLink(req, res) {
     }
 
     const resetSecret = process.env.Secret + user.password;
-    const token = JWT.sign(
+    const token = await JWT.sign(
       {
         id: user._id,
         email: user.email,
@@ -103,7 +103,7 @@ async function forgotLink(req, res) {
     const link = `http://localhost:4000/api/auth/reset/${user._id}/${token}`;
 
     const details = {
-      from: "testing01022019@outlook.com",
+      from: "<testing01022019@outlook.com>",
       to: email,
       subject: "One time password reset",
       html: `<h1>Password reset link</h1><a href=${`https://xeniaverse.co.in/resetpassword/${user._id}/${token}`}>Password reset</a>`,
