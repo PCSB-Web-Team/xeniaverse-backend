@@ -7,7 +7,7 @@ const nodemailer = require("nodemailer");
 
 const mailTransporter = nodemailer.createTransport({
   host: "smtp-mail.outlook.com", // hostname
-  secureConnection: false, // use SSL
+  // secureConnection: false, // use SSL
   port: 587, // port for secure SMTP
   auth: {
     user: process.env.gmailUser,
