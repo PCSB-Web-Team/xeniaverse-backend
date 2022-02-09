@@ -17,6 +17,10 @@ const participantSchema = new mongoose.Schema({
     type: mongoose.SchemaTypes.ObjectId,
     default: null,
   },
+  eventName: {
+    type: String,
+    required: true,
+  },
 });
 
 participantSchema.index({ userId: 1, eventId: 1 }, { unique: true });
