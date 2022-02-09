@@ -5,6 +5,7 @@ const seminar = require("./seminar.router");
 const { ParticipantRouter } = require("./participant.router");
 const RazorpayRouter = require("./razorpay.router");
 const TeamRouter = require("./teams.router");
+const scheduleRouter = require("./schedule.router");
 
 Router.use("/event", event);
 Router.use("/auth", auth);
@@ -12,6 +13,7 @@ Router.use("/seminar", seminar);
 Router.use("/participant", ParticipantRouter);
 Router.use("/razorpay", RazorpayRouter);
 Router.use("/teams", TeamRouter);
+Router.use("/schedule", scheduleRouter);
 Router.get("", (req, res) => {
   res.send("Welcome to Xenia-Verse");
 });
