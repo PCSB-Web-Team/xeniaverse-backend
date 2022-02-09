@@ -8,4 +8,6 @@ const scheduleSchema = new mongoose.Schema({
   icon: { type: String },
 });
 
-module.exports = scheduleSchema;
+const scheduleModel = mongoose.model("schedule", scheduleSchema);
+
+module.exports = scheduleModel;
