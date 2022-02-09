@@ -13,9 +13,9 @@ const mailTransporter = nodemailer.createTransport({
     user: process.env.gmailUser,
     pass: process.env.gmailPass,
   },
-  tls: {
-    ciphers: "SSLv3",
-  },
+  // tls: {
+  //   ciphers: "SSLv3",
+  // },
 });
 
 async function getAll(req, res) {
