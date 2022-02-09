@@ -31,7 +31,7 @@ async function register(req, res) {
 
     //process.env.Salt
     const hashedPassword = await bcrypt.hash(record.password, 10);
-    const newUser = await User.create({
+    var newUser = await User.create({
       name: record.name,
       email: record.email,
       password: hashedPassword,
