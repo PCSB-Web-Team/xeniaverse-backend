@@ -1,6 +1,8 @@
 const res = require("express/lib/response");
 const Event = require("../models/event.model");
+const participantModel = require("../models/participant.model");
 const Teams = require("../models/teams.models");
+const User = require("../models/user.model");
 
 async function getTeams(req, res) {
   const teamsList = await Teams.find({});
@@ -47,11 +49,11 @@ async function addTeamMemberRequest(req, res) {
 }
 
 async function createTeam(req, res) {
-  const { name, eventId } = req.body;
+  const { name, eventId, userId } = req.body;
 
   try {
-    if (!name || !eventId)
-      return res.send("Send all details: name, size, eventId");
+    if (!name || !eventId || !userId)
+      return res.status(400).send("Send all details: name, userId, eventId");
 
     const eventDetails = await Event.findById(eventId).lean();
 
@@ -66,6 +68,14 @@ async function createTeam(req, res) {
       eventId: eventId,
       max: eventDetails.teamSize,
     });
+
+    const participant = await participantModel.findOneAndUpdate(
+      { eventId, userId },
+      { teamId: newTeam._id },
+      {
+        new: true,
+      }
+    );
 
     res.send(newTeam);
   } catch (error) {

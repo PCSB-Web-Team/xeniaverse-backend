@@ -95,6 +95,9 @@ async function joinTeam(req, res) {
       eventId: team.eventId,
     });
 
+    if (participant.teamId)
+      return res.status(400).send("Participant has already joined a team");
+
     if (!participant)
       return res
         .status(400)
