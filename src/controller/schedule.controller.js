@@ -68,7 +68,7 @@ part5.save();
 part6.save();
 part7.save();
 
-async function getallScheduleDetails() {
+async function getallScheduleDetails(req, res) {
   try {
     const response = await schedule.find({});
     res.send(response);
