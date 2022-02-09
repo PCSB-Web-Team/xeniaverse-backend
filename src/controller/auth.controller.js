@@ -4,12 +4,18 @@ const bcrypt = require("bcrypt");
 const JWT = require("jsonwebtoken");
 const { generateToken } = require("../middlewares/JWT");
 const nodemailer = require("nodemailer");
+
 const mailTransporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp-mail.outlook.com", // hostname
+  // secureConnection: false, // use SSL
+  port: 587, // port for secure SMTP
   auth: {
     user: process.env.gmailUser,
     pass: process.env.gmailPass,
   },
+  // tls: {
+  //   ciphers: "SSLv3",
+  // },
 });
 
 async function getAll(req, res) {
@@ -97,13 +103,19 @@ async function forgotLink(req, res) {
     const link = `http://localhost:4000/api/auth/reset/${user._id}/${token}`;
 
     const details = {
-      from: "pictpbl@gmail.com",
+      from: "testing01022019@outlook.com",
       to: email,
       subject: "One time password reset",
       html: `<h1>Password reset link</h1><a href=${`https://xeniaverse.co.in/resetpassword/${user._id}/${token}`}>Password reset</a>`,
     };
-    mailTransporter.sendMail(details);
-    res.send("link has been sent");
+    mailTransporter.sendMail(details, function (err, info) {
+      if (err) {
+        res.send(err);
+        return;
+      } else {
+        res.send(info.response);
+      }
+    });
   } catch (error) {
     res.status(400).send(error.message);
   }
