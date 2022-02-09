@@ -6,7 +6,7 @@ const { generateToken } = require("../middlewares/JWT");
 const nodemailer = require("nodemailer");
 
 const mailTransporter = nodemailer.createTransport({
-  service: "gmail",
+  service: "hotmail",
   auth: {
     user: process.env.gmailUser,
     pass: process.env.gmailPass,
@@ -98,7 +98,7 @@ async function forgotLink(req, res) {
     const link = `http://localhost:4000/api/auth/reset/${user._id}/${token}`;
 
     const details = {
-      from: "pictpbl@gmail.com",
+      from: "testing01022019@outlook.com",
       to: email,
       subject: "One time password reset",
       html: `<h1>Password reset link</h1><a href=${`https://xeniaverse.co.in/resetpassword/${user._id}/${token}`}>Password reset</a>`,
