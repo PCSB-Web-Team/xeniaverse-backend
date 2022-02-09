@@ -41,6 +41,7 @@ async function razorpayVerification(req, res) {
   const name = req.body.payload.payment.entity.notes.name;
   const eventId = req.body.payload.payment.entity.notes.eventId;
   const userId = req.body.payload.payment.entity.notes.userId;
+  const eventName = req.body.payload.payment.entity.notes.eventName;
 
   try {
     const shasum = crypto.createHmac("sha256", secret);
