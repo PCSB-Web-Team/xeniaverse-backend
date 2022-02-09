@@ -6,9 +6,9 @@ const User = require("../models/user.model");
 const { addTeamMember } = require("./team.controller");
 
 async function newParticipant(req, res) {
-  const { userId, eventId } = req.body;
+  const { userId, eventId, eventName } = req.body;
   try {
-    if (!userId || !eventId)
+    if (!userId || !eventId || !eventName)
       throw new Error("All the field are required: userId, eventId");
 
     // searching user
@@ -27,6 +27,7 @@ async function newParticipant(req, res) {
       userId,
       eventId,
       name: user.name,
+      eventName,
     });
 
     res.send(participant);
@@ -82,35 +83,29 @@ async function checkIfParticipantPresent(req, res) {
 }
 
 async function joinTeam(req, res) {
-  const { userId, teamId } = req.body;
+  const { userId, teamId, eventId, name } = req.body;
   try {
+    const foundEvent = await Event.findById(eventId);
+
     const team = await Teams.findById(teamId);
 
     if (!team) return res.status(404).send("Team not found");
 
     if (team.isFull) return res.status(400).send("Team is Full");
 
-    const participant = await participantModel.findOne({
+    const newParticipant = await participantModel.create({
       userId,
-      eventId: team.eventId,
+      eventId,
+      name,
+      eventName: foundEvent.name,
+      teamId,
     });
-
-    if (participant.teamId)
-      return res.status(400).send("Participant has already joined a team");
-
-    if (!participant)
-      return res
-        .status(400)
-        .send("Particiant has not participated for this event");
-
-    participant.teamId = teamId;
 
     team.count = team.count + 1;
 
-    await participant.save();
     await team.save();
 
-    res.send(participant);
+    res.send(newParticipant);
   } catch (err) {
     res.status(400).send(err.message);
   }
