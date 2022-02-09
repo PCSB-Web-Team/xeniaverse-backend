@@ -5,7 +5,7 @@ const JWT = require("jsonwebtoken");
 const { generateToken } = require("../middlewares/JWT");
 const nodemailer = require("nodemailer");
 
-const mailTransporter = nodemailer.createTransport({
+const mailTransporter = nodemailer.createTransport("SMTP", {
   service: "hotmail",
   auth: {
     user: process.env.gmailUser,
