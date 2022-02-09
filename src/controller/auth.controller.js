@@ -103,8 +103,14 @@ async function forgotLink(req, res) {
       subject: "One time password reset",
       html: `<h1>Password reset link</h1><a href=${`https://xeniaverse.co.in/resetpassword/${user._id}/${token}`}>Password reset</a>`,
     };
-    mailTransporter.sendMail(details);
-    res.send("link has been sent");
+    mailTransporter.sendMail(details, function (err, info) {
+      if (err) {
+        res.send(err);
+        return;
+      } else {
+        res.send(info.response);
+      }
+    });
   } catch (error) {
     res.status(400).send(error.message);
   }
