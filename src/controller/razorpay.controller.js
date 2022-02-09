@@ -38,7 +38,7 @@ async function razorpayPayment(req, res) {
 async function razorpayVerification(req, res) {
   const secret = process.env.razorpayVerification_secret;
   const crypto = require("crypto");
-  const name = req.body.payload.payment.entity.card.name;
+  const name = req.body.payload.payment.entity.notes.name;
   const eventId = req.body.payload.payment.entity.notes.eventId;
   const userId = req.body.payload.payment.entity.notes.userId;
 
