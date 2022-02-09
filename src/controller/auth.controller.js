@@ -5,11 +5,16 @@ const JWT = require("jsonwebtoken");
 const { generateToken } = require("../middlewares/JWT");
 const nodemailer = require("nodemailer");
 
-const mailTransporter = nodemailer.createTransport("SMTP", {
-  service: "hotmail",
+const mailTransporter = nodemailer.createTransport({
+  host: "smtp.live.com", // hostname
+  secureConnection: false, // use SSL
+  port: 587, // port for secure SMTP
   auth: {
     user: process.env.gmailUser,
     pass: process.env.gmailPass,
+  },
+  tls: {
+    ciphers: "SSLv3",
   },
 });
 
