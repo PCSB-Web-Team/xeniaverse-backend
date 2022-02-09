@@ -103,7 +103,7 @@ async function forgotLink(req, res) {
     const link = `http://localhost:4000/api/auth/reset/${user._id}/${token}`;
 
     const details = {
-      from: "<testing01022019@outlook.com>",
+      from: "testing01022019@outlook.com",
       to: email,
       subject: "One time password reset",
       html: `<h1>Password reset link</h1><a href=${`https://xeniaverse.co.in/resetpassword/${user._id}/${token}`}>Password reset</a>`,
