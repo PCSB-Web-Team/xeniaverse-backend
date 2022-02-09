@@ -53,6 +53,7 @@ async function razorpayVerification(req, res) {
         userId: userId,
         eventId: eventId,
         name: name,
+        eventName: eventName,
       });
       // process it
     } else {
