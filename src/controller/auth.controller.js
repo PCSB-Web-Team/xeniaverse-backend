@@ -88,8 +88,8 @@ async function getProfile(req, res) {
 
 async function forgotLink(req, res) {
   try {
-    const record = req.body;
-    console.log(record);
+    const { email } = req.body;
+
     const user = await User.findOne({ email: email }).lean();
     if (!user) {
       return res.send("Please provide a valid email address");
@@ -119,7 +119,7 @@ async function forgotLink(req, res) {
       },
       to: email,
       subject: "One time password reset link",
-      html: `<h1>Here's the password reset link for your xeniaverse account</h1><a href=${`https://xeniaverse.co.in/resetpassword/${user._id}/${token}`}>Password reset</a>`,
+      html: `<h1>Here's the password reset link for your xeniaverse account</h1><a href=${`https://xeniaverse.co.in/resetpassword/${user._id}/${token}`}>Password reset link</a>`,
     };
 
     sgmail.send(details).then((response) => res.send("Email has been sent"));
