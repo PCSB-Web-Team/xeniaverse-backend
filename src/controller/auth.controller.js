@@ -166,8 +166,6 @@ async function passReset(req, res) {
         new: true,
       }
     );
-
-    res.send(response);
   } catch (error) {
     res.status(400).send("Link is expired");
   }
