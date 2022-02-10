@@ -88,8 +88,8 @@ async function getProfile(req, res) {
 
 async function forgotLink(req, res) {
   try {
-    const { email } = req.body;
-
+    const record = req.body;
+    console.log(record);
     const user = await User.findOne({ email: email }).lean();
     if (!user) {
       return res.send("Please provide a valid email address");
