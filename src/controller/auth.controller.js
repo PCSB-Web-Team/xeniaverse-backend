@@ -139,12 +139,12 @@ async function forgotLink(req, res) {
 
 async function passReset(req, res) {
   const { id, token } = req.params;
-  const { password, password2 } = req.body;
+  const { password } = req.body;
 
   try {
     const user = await User.findOne({ _id: id }).lean();
     if (!user) {
-      return res.send("Please provide a valid email address");
+      return res.send("User is not registered");
     }
 
     const resetSecret = process.env.Secret + user.password;
