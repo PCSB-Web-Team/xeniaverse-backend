@@ -3,21 +3,25 @@ const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const JWT = require("jsonwebtoken");
 const { generateToken } = require("../middlewares/JWT");
-const nodemailer = require("nodemailer");
+const sgmail = require("@sendgrid/mail");
+// const nodemailer = require("nodemailer");
 
-const mailTransporter = nodemailer.createTransport({
-  host: "smtp.office365.com", // hostname
-  service: "outlook",
-  secure: false, // TLS requires secureConnection to be false
-  port: 587, // port for secure SMTP
-  tls: {
-    ciphers: "SSLv3",
-  },
-  auth: {
-    user: "testing01022019@outlook.com",
-    pass: "testing@122019",
-  },
-});
+// const mailTransporter = nodemailer.createTransport({
+//   host: "smtp.gmail.com", // hostname
+//   secure: true, // TLS requires secureConnection to be false
+//   port: 465, // port for secure SMTP
+//   // tls: {
+//   //   ciphers: "SSLv3",
+//   // },
+//   auth: {
+//     type: "OAuth2",
+//     clientId:
+//       "528689738488-rc91q7hvm9dh314ape1hrg3u40iumh9m.apps.googleusercontent.com",
+//     clientSecret: "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",
+//     // user: "testing01022019@outlook.com",
+//     // pass: "testing@122019",
+//   },
+// });
 
 async function getAll(req, res) {
   const list = await User.find({});
@@ -103,20 +107,31 @@ async function forgotLink(req, res) {
 
     const link = `http://localhost:4000/api/auth/reset/${user._id}/${token}`;
 
+    const API_KEY =
+      "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";
+
+    sgmail.setApiKey(API_KEY);
+
     const details = {
-      from: "testing01022019@outlook.com",
+      from: {
+        name: "Xeniaverse",
+        email: "pictpbl@gmail.com",
+      },
       to: email,
-      subject: "One time password reset",
-      html: `<h1>Password reset link</h1><a href=${`https://xeniaverse.co.in/resetpassword/${user._id}/${token}`}>Password reset</a>`,
+      subject: "One time password reset link",
+      html: `<h1>Here's the password reset link for your xeniaverse account</h1><a href=${`https://xeniaverse.co.in/resetpassword/${user._id}/${token}`}>Password reset</a>`,
     };
-    mailTransporter.sendMail(details, function (err, info) {
-      if (err) {
-        res.send(err);
-        return;
-      } else {
-        res.send(info.response);
-      }
-    });
+
+    sgmail.send(details).then((response) => res.send("Email has been sent"));
+
+    // mailTransporter.sendMail(details, function (err, info) {
+    //   if (err) {
+    //     res.send(err);
+    //     return;
+    //   } else {
+    //     res.send(info.response);
+    //   }
+    // });
   } catch (error) {
     res.status(400).send(error.message);
   }
