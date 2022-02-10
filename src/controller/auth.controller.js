@@ -166,6 +166,7 @@ async function passReset(req, res) {
         new: true,
       }
     );
+    res.send("Your password has been changed!");
   } catch (error) {
     res.status(400).send("Link is expired");
   }
