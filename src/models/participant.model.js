@@ -21,6 +21,9 @@ const participantSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  email: {
+    type: String,
+  },
 });
 
 participantSchema.index({ userId: 1, eventId: 1 }, { unique: true });

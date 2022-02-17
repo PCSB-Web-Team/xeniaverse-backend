@@ -28,6 +28,7 @@ async function newParticipant(req, res) {
       eventId,
       name: user.name,
       eventName,
+      email: user.email,
     });
 
     res.send(participant);
@@ -48,13 +49,13 @@ async function getAllparticipants(req, res) {
 async function getAllparticipantsWithEmailData(req, res) {
   try {
     let list = [];
-    const registered = await participantModel.find({}).lean();
+    let registered = await participantModel.find({});
     for (var i = 0; i < registered.length; i++) {
       const user = await User.findById(registered[i].userId).lean();
-      list.push(registered[i]);
-      list[i] = { ...list[i], email: user.email };
+      registered[i].email = user.email;
+      await registered[i].save();
     }
-    res.send(list);
+    res.send(registered);
   } catch (error) {
     res.send(error.message);
   }
