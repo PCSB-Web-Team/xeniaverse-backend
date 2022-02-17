@@ -38,8 +38,14 @@ async function newParticipant(req, res) {
 
 async function getAllparticipants(req, res) {
   try {
-    const allUsers = await participantModel.find({});
-    res.send(allUsers);
+    let list=[];
+    const registered = await participantModel.find({}).lean();
+    for(var i=0;i<registered.length;i++){
+      const user = await User.findById(registered[i].userId).lean();
+      list.push(registered[i]);
+      list[i] = {...list[i], email: user.email};
+    }
+    res.send(list);
   } catch (error) {
     res.send(error.message);
   }
@@ -57,9 +63,15 @@ async function getParticipantById(req, res) {
 
 async function getEventById(req, res) {
   try {
+    let list=[];
     const { id } = req.params;
-    const registered = await participantModel.find({ eventId: id });
-    res.send(registered);
+    const registered = await participantModel.find({ eventId: id }).lean();
+    for(var i=0;i<registered.length;i++){
+      const user = await User.findById(registered[i].userId).lean();
+      list.push(registered[i]);
+      list[i] = {...list[i], email: user.email};
+    }
+    res.send(list);
   } catch (error) {
     res.send(error.message);
   }
